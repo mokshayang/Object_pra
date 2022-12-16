@@ -12,9 +12,20 @@ $stus=$Student->all();
 var_dump($Student);
 // var_dump($stus);
 echo "<br>";
+
 $find=$Student->find(30);
 dd($find);
+echo "<br>";
+echo is_object($find);
+echo "<br>";
+echo $find->name;
+echo "<br>";
+$find_val=$Student->find(30)->tel;
+echo $find_val;
+echo "<br>";
+
 $names=$Student->all();
+echo "<br>";
 foreach($names as $name){
     echo $name['name'] . " 的父母親 =>".$name['parents'];
     echo "<br>";
@@ -38,7 +49,6 @@ class DB
 
     public function all(...$args)
         { 
-            // global $pdo;
             $sql = "SELECT * FROM $this->table";
             if (isset($args[0])) {
                 if (is_array($args[0])) {
@@ -67,10 +77,10 @@ class DB
                         ->fetchAll(PDO::FETCH_ASSOC);
             //鍊式呼叫
         }
-        public function find($id){
-            
+
+
+        public function find($id){    
             $sql="SELECT * FROM $this->table ";
-        
             if(is_array($id)){
                 foreach($id as $key => $value){
                     $tmp[]="`$key`='$value'";
@@ -87,9 +97,17 @@ class DB
             // echo $sql;
             //fetch 屬單為陣列 若改為 fetchAll(二為陣列)，則等同於 all() definition function array.class
             //因fetch的關係，find()只會出現單筆資料。所以條件給一個就行了
-            return $this->pdo
-                        ->query($sql)
-                        ->fetch(PDO::FETCH_ASSOC);
+            // return $this->pdo
+            //             ->query($sql)
+            //             ->fetch(PDO::FETCH_ASSOC);
+             $row = $this->pdo
+                         ->query($sql)
+                         ->fetch(PDO::FETCH_ASSOC);
+                        $data=new stdClass;//只是一個通用的"空"類型!!
+                        foreach($row as $col => $value){
+                            $data->{$col}=$value;
+                        }
+                        return $data;
         }
 
 
