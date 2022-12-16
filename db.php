@@ -40,7 +40,6 @@ class DB
         { 
             // global $pdo;
             $sql = "SELECT * FROM $this->table";
-
             if (isset($args[0])) {
                 if (is_array($args[0])) {
                     foreach ($args[0] as $key => $value) {
