@@ -12,6 +12,8 @@ $stus=$Student->all();
 var_dump($Student);
 // var_dump($stus);
 echo "<br>";
+$find=$Student->find(30);
+dd($find);
 $names=$Student->all();
 foreach($names as $name){
     echo $name['name'] . " 的父母親 =>".$name['parents'];
@@ -66,6 +68,31 @@ class DB
                         ->fetchAll(PDO::FETCH_ASSOC);
             //鍊式呼叫
         }
-    
+        public function find($id){
+            
+            $sql="SELECT * FROM $this->table ";
+        
+            if(is_array($id)){
+                foreach($id as $key => $value){
+                    $tmp[]="`$key`='$value'";
+                    // dd($tmp);
+                }
+                $sql=$sql . "  WHERE " . join(" && " ,$tmp);
+            }else{
+                $sql.=" WHERE `id`='$id'";
+                // `id`='$id' ,已經有+符號，直接給數字就行了  $row=find('students','7');
+                // echo $sql;
+                // echo "<br>";
+            }
+            // echo "<br>";
+            // echo $sql;
+            //fetch 屬單為陣列 若改為 fetchAll(二為陣列)，則等同於 all() definition function array.class
+            //因fetch的關係，find()只會出現單筆資料。所以條件給一個就行了
+            return $this->pdo
+                        ->query($sql)
+                        ->fetch(PDO::FETCH_ASSOC);
+        }
+
+
 }
 ?>
