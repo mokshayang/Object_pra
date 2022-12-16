@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="test"></div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js"
+integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ=="
+crossorigin="anonymous" referrerpolicy="no-referrer">
+</script>
+    <script>
+        // 取得url 後方的參數 http://127.0.0.1:5500/test.html?user=mack&pw=1515
+        let href=location.href.split("?")[1].split("&")[0].split("=")[1];
+        //0-> "http://127.0.0.1:5500/test.html"  1-> "user=mack&pw=1515"
+        //0-> "user=mack" 1-> "pw=1515"
+        //0-> "user" 1-> "mack"
+        // let q=href.split("?");//split()炸開;相當於PHP : explode
+        
+        // console.log(q);
+        // console.log(q[1]);
+        // console.log(q[1].split("&"));
+        // console.log(q[1].split("&")[0]);
+        // console.log(q[1].split("&")[0].split("="));
+        // console.log(q[1].split("&")[0].split("=")[1]);
+        console.log(href);
+        $("#test").html(href);        
+    </script>
+</body>
+</html>
