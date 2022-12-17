@@ -1,52 +1,48 @@
 <?php
-$aa=new Amimal("moksha");//實體化 放入後 會馬上執行 __construct
-$bb=new Amimal("");//實體化 放入後 會馬上執行 __construct
-echo $aa->cat;
-echo $aa->getAge();
-echo $aa->getColor();
-echo $aa::acv;
-class Amimal
+ class A
 {
-    public $cat=35;//成員變數
-protected $age;//
-private $color;
-public const acv="const";
-
-function __construct($name)
+    
+    public $attribute1;
+    protected $aaa="ClassA";
+    const PP=464;
+    function operation()
+    {echo "A";}
+   
+}
+class B extends A
 {
-    echo $name."Start-Object";
-}
-function getAge(){
-    return $this->age=46;
-}
-
-function getColor(){
-    return $this->color;
-}
-function getCast(){
-    return $this->cast();
-}
-private function cast(){
-    echo "www.priavte";
-}
-
-
-}
-echo "<br>";
-$cc=new pp();
-echo $cc->att;
-// var_dump($cc->att);
-class pp{
-    private $att;
-    function __get($name)
+    
+    public $attribute2="kind";
+    protected $bbb="ClassB";
+    function operation()//需與父層相同名稱
     {
-        return $this->$name;
-        // return $name;
+        parent::operation();//調用父層(final 無法覆寫)
+        echo "(change !!)";//接續的文字，
     }
-    function __set($name,$value){
-        $this->$name=$value;
+    function getPro(){
+        return $this->aaa;
     }
 }
-// echo $aa->getCast();
+$a=new A;
+$b=new B;
+var_dump($b);
+echo $a->attribute1="parent";
+echo "<br>";
+echo $a->attribute2=123;
+echo "<br>";
+echo $a->operation;
+echo "<br>";
+echo $b->getPro();
+echo "<br>";
+echo $a->bbb=369;
+echo "<br>";
+var_dump($a);
+echo "<br>";
+// echo $a->operation2();//Fatal error
+echo $a->operation();
+echo "<br>";
+// echo $b->operation();
+echo "<br>";
+// echo $b->operation;
 
 ?>

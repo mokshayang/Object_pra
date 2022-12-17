@@ -9,7 +9,8 @@ $cat->run();
 // echo $cat->name;//無法取出
 echo $cat->getName();
 echo $cat->getColor();
-
+echo $cat->bbb=18;
+var_dump($cat);
 Class Animal{
     public $a=456465;
     protected $name='John';
