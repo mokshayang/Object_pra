@@ -24,7 +24,7 @@ class Car//Object 名稱一般使用大寫 :
     //public const 名稱一班都用大寫!!
     public const TYPE_A="裕隆";//使用const 不需要+$，且內容無法被改變
     public const YEAR="2022";//const 宣告的不需要+$，且內容無法被改變
-    public static $YEAR="2022";//const 宣告的不需要+$，且內容無法被改變
+    public static $YEAR="2022";//
 
 
     public static function speed(){// function speed 方法

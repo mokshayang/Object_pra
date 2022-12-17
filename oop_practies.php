@@ -35,13 +35,13 @@ private function act(){
     echo "會叫叫叫";
 }
 
-public function getName()
+ function getName()
 {
     return $this->name;
     
 }
 
-public function getColor()
+function getColor()
 {
     
     return $this->color;

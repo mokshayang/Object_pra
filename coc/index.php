@@ -1,7 +1,7 @@
 <?php
 //義類別內成員或方法的權限，區隔出外部和內部的關係
 //
-//使用關鍵字public , protect private
+//使用關鍵字public , protected private
 //Public -> 外部可以自由存取
 //Protect -> 內部和有繼承關係的可以存取
 //Private -> 僅限類別內部取用
