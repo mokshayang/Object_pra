@@ -285,6 +285,22 @@ private function arrayToSqlArray($array){//節省
 }
 
 
+// 常用的 definition function :
+// 萬用查詢 :
+function q($sql){
+    global $pdo;
+    // echo $sql;
+    return $pdo->query($sql)->fetchAll();    
+}
+// $sql="select * from `students` where `dept`='2'";
+// dd(q($sql));
+
+//轉換網頁 :
+function to($location){
+    header("location:$location");
+}
+//to("../xxxx/xxxx");
+
 
 }
 
