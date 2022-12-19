@@ -79,10 +79,12 @@ class DB
     {
         $sql = "SELECT * FROM $this->table ";
         if (is_array($id)) {
-            foreach ($id as $key => $value) {
-                $tmp[] = "`$key`='$value'";
-                // dd($tmp);
-            }
+            $tmp=$this->arrayToSqlArray(($id));
+        //     foreach ($id as $key => $value) {
+        //         $tmp[] = "`$key`='$value'";
+        //         // dd($tmp);
+        //     }
+        dd($tmp);
             $sql = $sql . "  WHERE " . join(" && ", $tmp);
         } else {
             $sql .= " WHERE `id`='$id'";
@@ -107,6 +109,7 @@ class DB
         return $row;//array
         // return $data;//Object
     }
+
     public function del($id)
     {
         $sql = "DELETE FROM $this->table";
@@ -146,9 +149,9 @@ class DB
             $sql="INSERT INTO $this->table (`" . join("`,`",$cols) ."`) 
                                     VALUES ('" . join("','",$array) ."')";
             echo $sql;
-            // return $this->pdo->exec($sql);
         }
-         echo $sql;
+        return $this->pdo->exec($sql);
+        
     }
 
 
@@ -167,7 +170,7 @@ function sum($col,...$arg){//&arg一定是陣列
     // }
     //  echo $sql;
     // return $this->pdo->query($sql)->fetchColumn();
-    $sql=$this->mathSql("avg",$col,$arg);
+    $sql=$this->mathSql("col",$col,$arg);
     echo $sql;
     return $this->pdo->query($sql)->fetchColumn();
 }
@@ -186,7 +189,7 @@ function max($col,...$arg){//&arg一定是陣列
     // }
     //  echo $sql;
     // return $this->pdo->query($sql)->fetchColumn();
-    $sql=$this->mathSql("avg",$col,$arg);
+    $sql=$this->mathSql("max",$col,$arg);
     echo $sql;
     return $this->pdo->query($sql)->fetchColumn();
 }
@@ -208,7 +211,7 @@ function min($col,...$arg){//&arg一定是陣列
     //  echo $sql;
 
     // return $this->pdo->query($sql)->fetchColumn();
-    $sql=$this->mathSql("avg",$col,$arg);
+    $sql=$this->mathSql("min",$col,$arg);
     echo $sql;
     return $this->pdo->query($sql)->fetchColumn();
 }
@@ -272,15 +275,30 @@ function count(...$arg){
     // return $this->pdo->query($sql)->fetchColumn();
 }
 
+//foreach 
+private function arrayToSqlArray($array){//節省
+        foreach ($array as $key => $value) {
+            $tmp[] = "`$key`='$value'";
+        }
+        // dd($tmp);
+    return $tmp;
 }
+
+
+
+}
+
+
+$stu=$Student->find(['uni_id'=>'C100000012']);
+dd($Student->find(1));
 // $echo $Student->options('id');
 //記數
-echo $Student->count('id');
-echo "<hr>";
-echo $Student->count(['dept'=>'4']);
-echo "<hr>";
-echo $Student->count('dept');
-echo "<hr>";
+// echo $Student->count('id');//不帶字串了，經過修改後，帶字串會出錯
+// echo "<hr>";
+// echo $Student->count(['dept'=>'4']);
+// echo "<hr>";
+//  echo $Student->count();
+// echo "<hr>";
 
 // //總計
 // echo  "<hr>";
@@ -288,24 +306,26 @@ echo "<hr>";
 // echo "<hr>";
 // echo $Student->sum('graduate_at',['id'=>'4']);
 // echo "<hr>";
-$Score=new DB("student_scores");
-echo $Score->max('score');
-echo "<hr>";
-echo $Score->min('score');
-echo "<hr>";
-echo $Score->avg('score');
+// $Score=new DB("student_scores");
+// echo $Score->max('score');
+// echo "<hr>";
+// echo $Score->min('score');
+// echo "<hr>";
+// echo $Score->avg('score');
 // 
 // 
-// $find = $Student->find(30);
+$find = $Student->find(1);
 // dd($find);
 // echo "<br>";
 // echo is_object($find);//true : 1
-// $find['name']="陳秋貴";
-// echo "<hr>";
-// $Student->save($find);
+$find['name']="陳秋貴1";
+dd($find);
+echo "<hr>";
+$Student->save($find);
 // dd($Student->save($find));
-// echo "<hr>";
+echo "<hr>";
 // $Student->save(['name'=>'張大同','dept'=>'2']);
+// $Student->save(['name'=>'張小同','dept'=>'4']);
 // echo "<hr>";
 // $del_test=$Student->save(['dept'=>'2','graduate_at'=>'3','id'=>'4']);
 // dd($del_test);
@@ -314,3 +334,4 @@ echo $Score->avg('score');
 //UPDATE table SET `col`='val' , ..... WHERE `id` = '$id';
 // $Student->count();
 //數學函式
+?>
