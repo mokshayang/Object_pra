@@ -9,8 +9,8 @@ function dd($array)
     echo "</pre>";
 }
 $Student = new DB("students");
-$stus = $Student->all();
-var_dump($Student);
+// $stus = $Student->all();
+// var_dump($Student);
 // var_dump($stus);
 echo "<br>";
 
@@ -21,13 +21,13 @@ echo "<br>";
 
 echo "<br>";
 
-$names = $Student->all();
+// $names = $Student->all();
 echo "<br>";
 // foreach ($names as $name) {
 //     echo $name['name'] . " 的父母親 =>" . $name['parents'];
 //     echo "<br>";
 // }
-// dd($Student->all(['dept'=>4]));
+// dd($Student->all(['dept'=>6]));
 // foreach($stus as $stu){
 //     echo $stu['parents'];
 //     echo "<br>";
@@ -48,9 +48,10 @@ class DB
         $sql = "SELECT * FROM $this->table";
         if (isset($args[0])) {
             if (is_array($args[0])) {
-                foreach ($args[0] as $key => $value) {
-                    $tmp[] = "`$key`='$value'";
-                }
+                $tmp=$this->arrayToSqlArray($args[0]);//取代下方
+                // foreach ($args[0] as $key => $value) {
+                //     $tmp[] = "`$key`='$value'";
+                // }
                 //須符合SQL語法
                 //用join將 $tmp 用 && 合併
                 $sql = $sql . " WHERE " . join(" && ", $tmp);
@@ -79,7 +80,7 @@ class DB
     {
         $sql = "SELECT * FROM $this->table ";
         if (is_array($id)) {
-            $tmp=$this->arrayToSqlArray(($id));
+            $tmp=$this->arrayToSqlArray(($id));//取代下方foreach
         //     foreach ($id as $key => $value) {
         //         $tmp[] = "`$key`='$value'";
         //         // dd($tmp);
@@ -114,10 +115,11 @@ class DB
     {
         $sql = "DELETE FROM $this->table";
         if (is_array($id)) {
-            $tmp = [];
-            foreach ($id as $key => $value) {
-                $tmp[] = "`$key`='$value'";
-            }
+            $tmp=$this->arrayToSqlArray($id);
+            // $tmp = [];
+            // foreach ($id as $key => $value) {
+            //     $tmp[] = "`$key`='$value'";
+            // }
             $sql = $sql . " WHERE" . join(" && ", $tmp);
         } else {
             $sql = $sql . " WHERE `id`='$id'";
@@ -133,15 +135,22 @@ class DB
         if(isset($array['id'])){//確保資料表有id
             //更新 update 只針對條件id的
             // if(array('id')){//
-                foreach($array as $key => $value){
-                    if($key!='id'){//不同ID
-                    $tmp[]="`$key`='$value'";
-                    // dd($tmp);
-                    }
-                }
+                $id=$array['id'];//取出id欄位裝入變數
+                dd($id);
+                unset($array['id']);//註銷id欄位，註銷前先取用 上方 |
+                
+                $tmp=$this->arrayToSqlArray($array);
+                // foreach($array as $key => $value){
+                //     if($key!='id'){//少一個ID
+                //     $tmp[]="`$key`='$value'";
+                //     // dd($tmp);
+                //     }
+                // }
+                dd(($tmp));
                 $sql = "UPDATE $this->table SET ";
                 $sql .= join(" , ", $tmp);
-                $sql .= " WHERE `id`='{$array['id']}'";
+                // $sql .= " WHERE `id`='{$array['id']}'";
+                $sql .= " WHERE `id`=$id";
                 // dd($sql);
         }else{
             //新增 insert
@@ -251,7 +260,7 @@ function count(...$arg){
     // }
     // echo $sql;
 
-    $sql=$this->mathSql("count",'*',$arg);
+    $sql=$this->mathSql("count",'*',$arg);//之後查詢 不能用字串了
     echo $sql;
     return $this->pdo->query($sql)->fetchColumn();
     }
@@ -276,7 +285,7 @@ function count(...$arg){
 }
 
 //foreach 
-private function arrayToSqlArray($array){//節省
+private function arrayToSqlArray($array){//節省foreach
         foreach ($array as $key => $value) {
             $tmp[] = "`$key`='$value'";
         }
@@ -284,11 +293,13 @@ private function arrayToSqlArray($array){//節省
     return $tmp;
 }
 
-
+}
 // 常用的 definition function :
 // 萬用查詢 :
 function q($sql){
     global $pdo;
+    $dsn="mysql:host=localhost;charset=utf8;dbname=school";
+    $pdo=new PDO($dsn,'root','');
     // echo $sql;
     return $pdo->query($sql)->fetchAll();    
 }
@@ -302,16 +313,17 @@ function to($location){
 //to("../xxxx/xxxx");
 
 
-}
 
 
-$stu=$Student->find(['uni_id'=>'C100000012']);
-dd($Student->find(1));
+
+
+// $stu=$Student->find(['uni_id'=>'C100000012']);
+// dd($Student->find(1));
 // $echo $Student->options('id');
 //記數
 // echo $Student->count('id');//不帶字串了，經過修改後，帶字串會出錯
 // echo "<hr>";
-// echo $Student->count(['dept'=>'4']);
+// echo $Student->count(['dept'=>'4']);//可以帶陣列
 // echo "<hr>";
 //  echo $Student->count();
 // echo "<hr>";
@@ -330,7 +342,7 @@ dd($Student->find(1));
 // echo $Score->avg('score');
 // 
 // 
-$find = $Student->find(1);
+$find = $Student->find(4);
 // dd($find);
 // echo "<br>";
 // echo is_object($find);//true : 1
@@ -340,7 +352,7 @@ echo "<hr>";
 $Student->save($find);
 // dd($Student->save($find));
 echo "<hr>";
-// $Student->save(['name'=>'張大同','dept'=>'2']);
+$Student->save(['name'=>'張大同','dept'=>'2']);
 // $Student->save(['name'=>'張小同','dept'=>'4']);
 // echo "<hr>";
 // $del_test=$Student->save(['dept'=>'2','graduate_at'=>'3','id'=>'4']);
@@ -350,4 +362,6 @@ echo "<hr>";
 //UPDATE table SET `col`='val' , ..... WHERE `id` = '$id';
 // $Student->count();
 //數學函式
+// $row=q("SELECT * FROM students WHERE `dept`=4 order by `id` desc ");
+// dd($row);
 ?>
