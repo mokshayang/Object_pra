@@ -123,7 +123,7 @@ class DB
 //INSERT INTO table (`col`,) VALUE ('val');
 //UPDATE table SET `col`='val' , ..... WHERE `id` = '$id';
 
-    public function save($array){//
+    public function save($array){//此唯一微陣列
         if(isset($array['id'])){//確保資料表有id
             //根據語法 update 必須有where，insert into必不加where
             //此自訂義的function where 使用 id(每個資料表都會有的欄位主鍵)
@@ -136,7 +136,9 @@ class DB
                 
                 $tmp=$this->arrayToSqlArray($array);
                 // foreach($array as $key => $value){
-                //     if($key!='id'){//少一個ID
+                //     if($key!='id'){//少一個ID，id為自動增加且where條件指定id
+                                      //所以把id拿掉不做update，
+                                      //這邊的$key 指的就是欄位名
                 //     $tmp[]="`$key`='$value'";
                 //     // dd($tmp);
                 //     }
@@ -147,7 +149,7 @@ class DB
                 // $sql .= " WHERE `id`='{$array['id']}'";
                 $sql .= " WHERE `id`=$id";
                 // dd($sql);
-        }else{
+        }else{//如果沒有id，即沒有使用where條件，為insert into
             //新增 insert
             $cols=array_keys($array);
             $sql="INSERT INTO $this->table (`" . join("`,`",$cols) ."`) 
