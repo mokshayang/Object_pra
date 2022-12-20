@@ -53,8 +53,13 @@ class DB
         $this->pdo=new PDO($this->dsn,'root','');
         $this->table=$table;
     }
-  
-   
+  //UPDATE TABLE SET ` `=' ',` `=' '.... WHERE ``=''
+  //INSERT INTO TABLE (``,``....) VALUES ('',''....)
+    function save($array){
+        if(isset($array['id'])){
+            
+        }
+    }
 
 
 }
