@@ -53,16 +53,39 @@ class DB
         $this->pdo = new PDO($this->dsn, 'root', '');
         $this->table = $table;
     }
+    function find($id){
+        if(is_array($id)){
+           $tmp = $this->arrayToSqlArray($id);
+           $sql="select * from $this->table where";
+           $sql .= join(" && ",$tmp);
+        }else{
+            $sql ="select * from $this->table where `id`=$id";
+        }
+        echo $sql;
+        return $this->pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+    }
+
+    
+
+
+
+
+
     function save($array){
         if(isset($array['id'])){
-            foreach ($array as $key => $value) {
-                if($key!='id'){
-                    $tmp[]="`$key`='$value'";
-                }
-            }
+            $id=$array['id'];
+            dd($id);
+            unset($array['id']);
+            dd($id);
+            // foreach ($array as $key => $value) {
+            //     if($key!='id'){
+            //         $tmp[]="`$key`='$value'";
+            //     }
+            // }
+            $tmp = $this->arrayToSqlArray($array);//引用private function
             $sql = "update $this->table set";
             $sql .=join(" , ",$tmp);
-            $sql .=" where `id`='{$array['id']}'";
+            $sql .=" where `id`='$id'";
         }else{
             $cols=array_keys($array);
             $sql = "insert into $this->table (`" . join("`,`",$cols)."`)
@@ -71,8 +94,21 @@ class DB
         echo $sql;
         return $this->pdo->exec($sql);
     }
-    
+//foreach 
+private function arrayToSqlArray($array){
+    foreach ($array as $key => $value) {
+        $tmp[]="`$key`='$value'";
+    }
+    return $tmp;
 }
-$ui=$Student->save(['dept'=>'2','graduate_at'=>'5','id'=>'489','name'=>'moksha']);
+
+
+
+
+}
+$fine=$Student->find(20);
+dd($fine);
+$fine['name']="阿華哥";
+$ui=$Student->save($fine);
 // $ui=$Student->save(['dept'=>'2','graduate_at'=>'5']);
 dd($ui);

@@ -129,7 +129,8 @@ class DB
             //根據語法 update 必須有where，insert into必不加where
             //此自訂義的function where 使用 id(每個資料表都會有的欄位主鍵)
             //所以判斷有無id來分辨 是 update or insert
-            //更新 update 只針對條件id的
+            //更新 update 只針對條件id的，,且必加where
+            //id存在的話即where存在，所以拿id來判斷
             // if(array('id')){//
             $id = $array['id']; //取出id欄位裝入變數
             dd($id);

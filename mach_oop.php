@@ -115,17 +115,11 @@ private function mathSql($math,$col,...$arg)
     }
     return $sql;
 }
-//foreach
-private function arrayToSqlArray($array){
-    foreach ($array as $key => $value) {
-        $tmp[]="`$key`='$value'";
-    }
-    return $tmp;
-}
+
 
 }
 $math=new DB("student_scores");
-$count=$math->count(['score'=>68]);
+$count=$math->count(['score'=>'82']);
 dd($count);
 $sum=$math->sum('score');
 dd($sum);
