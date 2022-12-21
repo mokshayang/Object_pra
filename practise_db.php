@@ -53,7 +53,7 @@ class DB
         $this->pdo = new PDO($this->dsn, 'root', '');
         $this->table = $table;
     }
-    function find($id){
+    function find($id){//一定要放，所以is_array;
         if(is_array($id)){
            $tmp = $this->arrayToSqlArray($id);
            $sql="select * from $this->table where";
@@ -71,12 +71,10 @@ class DB
 
 
 
-    function save($array){
+    function save($array){//鐵定需要放array，所以不需要is_array
         if(isset($array['id'])){
-            $id=$array['id'];
-            dd($id);
-            unset($array['id']);
-            dd($id);
+            $id=$array['id'];//先取出 id
+            unset($array['id']);//註銷 id
             // foreach ($array as $key => $value) {
             //     if($key!='id'){
             //         $tmp[]="`$key`='$value'";
