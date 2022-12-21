@@ -161,7 +161,7 @@ class DB
     }
 
 
-    //數學函式:總計
+    //數學函式:加總
     function sum($col, ...$arg)
     { //&arg一定是陣列
         // return $this->mathSql("sum",$col,$arg);
@@ -177,7 +177,7 @@ class DB
         // }
         //  echo $sql;
         // return $this->pdo->query($sql)->fetchColumn();
-        $sql = $this->mathSql("col", $col, $arg);
+        $sql = $this->mathSql("sum", $col, $arg);
         echo $sql;
         return $this->pdo->query($sql)->fetchColumn();
     }
@@ -334,10 +334,12 @@ function to($location)
 // echo "<hr>";
 
 // //總計
-// echo  "<hr>";
+echo  "<hr>";
 // echo $Student->sum('graduate_at');
-// echo "<hr>";
-// echo $Student->sum('graduate_at',['id'=>'4']);
+
+echo "<hr>";
+// dd($Student->sum('graduate_at'));
+echo $Student->sum('graduate_at',['id'=>'4']);
 // echo "<hr>";
 // $Score=new DB("student_scores");
 // echo $Score->max('score');
@@ -347,17 +349,17 @@ function to($location)
 // echo $Score->avg('score');
 // 
 // 
-$find = $Student->find(4);
+// $find = $Student->find(4);
 // dd($find);
 // echo "<br>";
 // echo is_object($find);//true : 1
-$find['name'] = "陳秋貴1";
-dd($find);
+// $find['name'] = "陳秋貴1";
+// dd($find);
 echo "<hr>";
-$Student->save($find);
+// $Student->save($find);
 // dd($Student->save($find));
 echo "<hr>";
-$Student->save(['name' => '張大同', 'dept' => '2']);
+// $Student->save(['name' => '張大同', 'dept' => '2']);
 // $Student->save(['name'=>'張小同','dept'=>'4']);
 // echo "<hr>";
 // $del_test=$Student->save(['dept'=>'2','graduate_at'=>'3','id'=>'4']);
