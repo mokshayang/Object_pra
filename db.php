@@ -179,7 +179,7 @@ function sum($col,...$arg){//&arg一定是陣列
     // }
     //  echo $sql;
     // return $this->pdo->query($sql)->fetchColumn();
-    $sql=$this->mathSql("col",$col,$arg);
+    $sql=$this->mathSql("sum",$col,$arg);
     echo $sql;
     return $this->pdo->query($sql)->fetchColumn();
 }
